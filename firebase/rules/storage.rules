@@ -1,0 +1,108 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function currentUserDocPath() {
+      return /databases/(default)/documents/shopUsers/$(request.auth.uid);
+    }
+
+    function currentUserDocExists() {
+      return signedIn() && firestore.exists(currentUserDocPath());
+    }
+
+    function isAdmin() {
+      return currentUserDocExists()
+        && firestore.get(currentUserDocPath()).data.role in ['admin', 'superadmin'];
+    }
+
+    function isAssignedToGroup(groupId) {
+      return currentUserDocExists()
+        && (firestore.get(currentUserDocPath()).data.assignedGroupId == groupId
+          || (firestore.get(currentUserDocPath()).data.activeGroupIds is list && groupId in firestore.get(currentUserDocPath()).data.activeGroupIds));
+    }
+
+    function isImageUpload() {
+      return request.resource.contentType != null
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    function isVideoUpload() {
+      return request.resource.contentType != null
+        && request.resource.contentType.matches('video/.*');
+    }
+
+    function isDocumentUpload() {
+      return request.resource.contentType != null
+        && request.resource.contentType in [
+          'application/pdf',
+          'text/plain',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+    }
+
+    match /programmes/{programmeId}/{mediaType}/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && (
+          (mediaType == 'images' && isImageUpload() && request.resource.size < 20 * 1024 * 1024)
+          || (mediaType == 'videos' && isVideoUpload() && request.resource.size < 80 * 1024 * 1024)
+        );
+    }
+
+    match /app-media/{category}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && isImageUpload()
+        && request.resource.size < 10 * 1024 * 1024;
+    }
+
+    match /shop-interests/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && isImageUpload()
+        && request.resource.size < 10 * 1024 * 1024;
+    }
+
+    match /community/feed/{userId}/{fileName} {
+      allow read: if signedIn();
+      allow write: if signedIn()
+        && request.auth.uid == userId
+        && (
+          (isImageUpload() && request.resource.size < 20 * 1024 * 1024)
+          || (isVideoUpload() && request.resource.size < 80 * 1024 * 1024)
+          || (isDocumentUpload() && request.resource.size < 20 * 1024 * 1024)
+        );
+    }
+
+    match /groups/{groupId}/feed/{userId}/{fileName} {
+      allow read: if isAssignedToGroup(groupId) || isAdmin();
+      allow write: if signedIn()
+        && request.auth.uid == userId
+        && isAssignedToGroup(groupId)
+        && (
+          (isImageUpload() && request.resource.size < 20 * 1024 * 1024)
+          || (isVideoUpload() && request.resource.size < 80 * 1024 * 1024)
+          || (isDocumentUpload() && request.resource.size < 20 * 1024 * 1024)
+        );
+    }
+
+    match /stories/{userId}/{fileName} {
+      allow read: if signedIn();
+      allow write: if signedIn()
+        && request.auth.uid == userId
+        && ((isImageUpload() && request.resource.size < 20 * 1024 * 1024)
+          || (isVideoUpload() && request.resource.size < 50 * 1024 * 1024));
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

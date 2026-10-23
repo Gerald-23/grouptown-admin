@@ -1,0 +1,321 @@
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--on-surface);
+}
+
+.container {
+  width: min(1240px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+}
+
+.headerInner {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand,
+.nav a,
+.footer a,
+.loginPrompt a,
+.agaLink,
+.checkboxRow a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand {
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav a {
+  color: var(--on-surface-variant);
+  font-size: 0.875rem;
+}
+
+.getStartedButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  color: var(--on-primary) !important;
+  font-weight: 700;
+}
+
+.main {
+  min-height: calc(100vh - 128px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px;
+}
+
+.formCard {
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.75rem;
+  background: var(--surface-container-lowest);
+  padding: 32px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.headingBlock {
+  margin-bottom: 32px;
+}
+
+.headingBlock h1 {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: clamp(2rem, 4vw, 2.25rem);
+  line-height: 1.2;
+}
+
+.headingBlock p,
+.agaDescription,
+.footerBrandBlock div:last-child {
+  color: var(--on-surface-variant);
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.twoColGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form label > span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--on-surface-variant);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.form input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.5rem;
+  background: #fff;
+  font: inherit;
+}
+
+.phoneRow {
+  display: flex;
+}
+
+.phonePrefix {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--outline-variant);
+  border-right: 0;
+  border-radius: 0.5rem 0 0 0.5rem;
+  background: var(--surface-container-low);
+  color: var(--on-surface-variant);
+  font-weight: 700;
+}
+
+.phonePrefix img {
+  width: 20px;
+  height: auto;
+}
+
+.phoneRow input {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.passwordCard {
+  padding: 8px 16px;
+  border: 1px solid rgba(207, 196, 197, 0.3);
+  border-radius: 0.5rem;
+  background: var(--surface-container-low);
+}
+
+.passwordCard p {
+  margin: 0 0 8px;
+  color: var(--on-surface-variant);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.passwordCheck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--on-surface-variant);
+  font-size: 0.875rem;
+}
+
+.passwordCheck + .passwordCheck {
+  margin-top: 4px;
+}
+
+.checkboxGroup {
+  display: grid;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.checkboxRow input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.checkboxRow span {
+  color: var(--on-surface-variant);
+  line-height: 1.45;
+  font-size: 0.875rem;
+}
+
+.checkboxRow a,
+.loginPrompt a,
+.agaLink {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.errorText {
+  margin: 0;
+  color: var(--error);
+  font-size: 0.875rem;
+}
+
+.submitButton {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  color: var(--on-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+}
+
+.agaCallout {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--outline-variant);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.agaIconWrap {
+  padding: 8px;
+  border-radius: 999px;
+  background: var(--surface-container-high);
+  color: var(--primary);
+}
+
+.agaTitle {
+  margin: 0 0 4px;
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.loginPrompt {
+  margin: 32px 0 0;
+  color: var(--on-surface-variant);
+  font-size: 1rem;
+}
+
+.footer {
+  border-top: 1px solid var(--outline-variant);
+  background: var(--surface-container-low);
+}
+
+.footerInner {
+  min-height: 96px;
+  padding: 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footerBrand {
+  margin-bottom: 4px;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.footerLinks a {
+  color: var(--on-surface-variant);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 720px) {
+  .nav {
+    display: none;
+  }
+
+  .twoColGrid,
+  .footerInner {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .footerInner {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .footerLinks {
+    justify-content: center;
+  }
+}

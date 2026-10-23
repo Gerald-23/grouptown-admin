@@ -1,0 +1,7 @@
+functions/node_modules/
+functions/lib/
+functions/.env
+functions/.env.*
+!.env.example
+.firebase/
+*.log

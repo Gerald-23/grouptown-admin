@@ -1,0 +1,583 @@
+.stateWrap {
+  margin-top: 32px;
+  display: grid;
+  gap: 24px;
+}
+
+.heroBanner,
+.priorityBanner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--primary);
+}
+
+.heroBanner {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.heroBanner h2,
+.priorityBanner h2,
+.sectionTitle,
+.cardTitle,
+.mainMetric,
+.metricValue,
+.timelineTitle {
+  margin: 0;
+}
+
+.heroBanner p,
+.priorityBanner p,
+.mutedText,
+.timelineMeta,
+.smallMeta,
+.emptyText {
+  margin: 0;
+}
+
+.bannerText {
+  display: grid;
+  gap: 8px;
+}
+
+.priorityBanner {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.priorityContent {
+  display: flex;
+  gap: 16px;
+}
+
+.priorityIcon {
+  font-size: 32px;
+}
+
+.metricsGrid,
+.dualGrid,
+.subMetricGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.metricsGrid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.metricCard,
+.panel,
+.timelinePanel,
+.notificationCard,
+.emptyStateCard,
+.subMetricCard,
+.featuredPanel,
+.actionRow,
+.assetRow,
+.listPanel,
+.supportPanel {
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+}
+
+.metricCard,
+.panel,
+.timelinePanel,
+.notificationCard,
+.subMetricCard,
+.supportPanel {
+  padding: 24px;
+}
+
+.metricCard {
+  min-height: 152px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--surface-container-low);
+}
+
+.metricLabel,
+.sectionKicker,
+.smallMeta,
+.timelineMeta,
+.panelKicker,
+.statusBadge,
+.assetTag,
+.timelineLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metricLabel,
+.sectionKicker,
+.smallMeta,
+.timelineMeta,
+.timelineLabel,
+.mutedText,
+.emptyText {
+  color: var(--secondary);
+}
+
+.metricValue,
+.mainMetric {
+  color: var(--primary);
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  line-height: 1.1;
+}
+
+.metricNote {
+  color: var(--error);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.dualGrid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.sectionTitle {
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.panelHeaderStack {
+  display: grid;
+  gap: 8px;
+}
+
+.statusChipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.statusBadge,
+.assetTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid var(--outline-variant);
+}
+
+.statusBadgeSolid {
+  background: var(--surface-container);
+  color: var(--primary);
+  border-color: var(--surface-container);
+}
+
+.statusBadgeDanger {
+  color: var(--error);
+  border-color: var(--error);
+}
+
+.statusBadgePositive {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.programCardGrid {
+  display: grid;
+  gap: 16px;
+}
+
+.programCard {
+  padding: 24px;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-low);
+  display: grid;
+  gap: 24px;
+}
+
+.programTop,
+.programBottom,
+.assetRow,
+.assetValueWrap,
+.timelineItem,
+.actionRow,
+.notifHeader,
+.supportHeader {
+  display: flex;
+}
+
+.programTop,
+.assetRow,
+.notifHeader,
+.supportHeader {
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.programBottom,
+.timelineItem,
+.actionRow {
+  align-items: center;
+  gap: 12px;
+}
+
+.programRef {
+  color: var(--secondary);
+  font-size: 0.75rem;
+}
+
+.programState {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stateDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.actionList,
+.notificationList,
+.assetList {
+  display: grid;
+  gap: 12px;
+}
+
+.actionRow,
+.assetRow {
+  padding: 16px;
+  border: 1px solid var(--outline-variant);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.actionRowPrimary {
+  border-color: var(--primary);
+}
+
+.actionRow:hover,
+.assetRow:hover {
+  border-color: var(--primary);
+  background: var(--surface-container-low);
+}
+
+.actionIcon,
+.timelineIcon,
+.notifAccent,
+.assetIconWrap {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.actionIcon {
+  border: 1px solid var(--outline-variant);
+}
+
+.actionRowPrimary .actionIcon {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.actionContent,
+.assetText,
+.notifText,
+.timelineText {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.strongText {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.timelinePanel,
+.supportPanel {
+  background: var(--surface-container-low);
+}
+
+.timelineList {
+  position: relative;
+  display: grid;
+  gap: 24px;
+  padding-left: 24px;
+}
+
+.timelineList::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 7px;
+  width: 1px;
+  background: var(--outline-variant);
+}
+
+.timelineItem {
+  align-items: flex-start;
+}
+
+.timelineDot {
+  position: relative;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  margin-left: -24px;
+  margin-top: 4px;
+  border-radius: 999px;
+  background: var(--outline-variant);
+  border: 4px solid var(--surface-container-low);
+}
+
+.timelineDotActive {
+  background: var(--primary);
+}
+
+.notificationList {
+  gap: 16px;
+}
+
+.notificationCardPrimary {
+  border-left: 4px solid var(--primary);
+}
+
+.emptyStateCard {
+  min-height: 380px;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--surface-container-lowest);
+}
+
+.emptyIcon {
+  font-size: 80px;
+  opacity: 0.2;
+}
+
+.subMetricGrid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.subMetricCard {
+  background: var(--surface-container-low);
+}
+
+.featuredPanel {
+  overflow: hidden;
+}
+
+.featuredInner {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+}
+
+.featuredMedia {
+  min-height: 260px;
+  border: 1px solid rgba(207, 196, 197, 0.5);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)),
+    linear-gradient(135deg, var(--surface-container-low), var(--surface-container-high));
+}
+
+.overviewGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.assetList {
+  border-top: 1px solid var(--outline-variant);
+}
+
+.assetRow {
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--outline-variant);
+  border-left: 0;
+  background: var(--surface-container-lowest);
+}
+
+.assetIconWrap {
+  background: var(--surface-container);
+}
+
+.assetValueWrap {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.assetStatusStable,
+.assetStatusPending,
+.assetStatusGrowing {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid var(--outline-variant);
+}
+
+.assetStatusStable,
+.assetStatusGrowing {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.assetStatusPending {
+  color: var(--secondary);
+}
+
+.listPanelFooter {
+  padding: 16px 24px;
+  background: var(--surface-container-low);
+  text-align: center;
+}
+
+.listPanelFooter a {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.alertPanel {
+  border-left: 4px solid var(--primary);
+  background: var(--surface-container);
+  padding: 24px;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.skeletonCard,
+.skeletonPanel,
+.errorPanel {
+  padding: 24px;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container);
+}
+
+.skeletonCard {
+  min-height: 168px;
+  display: grid;
+  gap: 16px;
+}
+
+.skeletonLine,
+.skeletonBlock,
+.skeletonSmall {
+  background: var(--outline-variant);
+  opacity: 0.55;
+  animation: skeletonPulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeletonLine {
+  height: 16px;
+}
+
+.skeletonBlock {
+  height: 40px;
+}
+
+.skeletonSmall {
+  height: 12px;
+}
+
+.errorPanel {
+  text-align: center;
+  background: var(--surface-container-lowest);
+}
+
+.errorIconWrap {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  border-radius: 999px;
+  border: 1px solid var(--error);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--error);
+}
+
+.errorTitle {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+@keyframes skeletonPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@media (min-width: 768px) {
+  .heroBanner,
+  .priorityBanner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dualGrid {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .subMetricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featuredInner {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+    align-items: center;
+  }
+
+  .overviewGrid {
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+  }
+
+  .skeletonGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

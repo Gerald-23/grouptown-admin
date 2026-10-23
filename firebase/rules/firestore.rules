@@ -1,0 +1,814 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function isTokenAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function isRoleAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/shopUsers/$(request.auth.uid))
+        && get(/databases/$(database)/documents/shopUsers/$(request.auth.uid)).data.role in ['admin', 'superadmin'];
+    }
+
+    function isAdmin() {
+      return isTokenAdmin() || isRoleAdmin();
+    }
+
+    function currentUserDoc() {
+      return get(/databases/$(database)/documents/shopUsers/$(request.auth.uid)).data;
+    }
+
+    function isAssignedToGroup(groupId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/shopUsers/$(request.auth.uid))
+        && (currentUserDoc().assignedGroupId == groupId
+          || (currentUserDoc().activeGroupIds is list && groupId in currentUserDoc().activeGroupIds));
+    }
+
+    function validStatus(value) {
+      return value in ['draft', 'active', 'closed', 'open', 'full'];
+    }
+
+    function validMemberRole(value) {
+      return value in ['Registered member', 'Authenticated member', 'Returning customer', 'admin', 'superadmin'];
+    }
+
+    function validUserKind(value) {
+      return value in ['member', 'aga'];
+    }
+
+    function validTimestamp(value) {
+      return value is timestamp;
+    }
+
+    function validOptionalTimestamp(value) {
+      return value == null || value is timestamp;
+    }
+
+    function validOptionalString(value) {
+      return value == null || value is string;
+    }
+
+    function validSystemAlertStatus(value) {
+      return value in ['open', 'resolved'];
+    }
+
+    function validSystemAlertDocument(data) {
+      return data.keys().hasAll([
+          'sourceApp',
+          'sourceArea',
+          'issueType',
+          'severity',
+          'status',
+          'code',
+          'message',
+          'fingerprint',
+          'userId',
+          'userEmail',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.sourceApp is string
+        && data.sourceArea is string
+        && data.issueType is string
+        && data.severity is string
+        && validSystemAlertStatus(data.status)
+        && data.code is string
+        && data.message is string
+        && data.fingerprint is string
+        && data.userId is string
+        && data.userEmail is string
+        && validTimestamp(data.createdAt)
+        && validTimestamp(data.updatedAt)
+        && (!data.keys().hasAny(['resolvedBy']) || data.resolvedBy is string)
+        && (!data.keys().hasAny(['resolvedAt']) || validOptionalTimestamp(data.resolvedAt));
+    }
+
+    function validGroupPostAttachments(items) {
+      return items is list
+        && items.size() <= 6;
+    }
+
+    function validGroupPostDocument(data) {
+      return data.keys().hasAll([
+          'authorId',
+          'authorName',
+          'authorInitials',
+          'body',
+          'attachments',
+          'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'authorId',
+          'authorName',
+          'authorInitials',
+          'body',
+          'attachments',
+          'createdAt'
+        ])
+        && data.authorId is string
+        && data.authorName is string
+        && data.authorInitials is string
+        && data.body is string
+        && validGroupPostAttachments(data.attachments)
+        && validTimestamp(data.createdAt)
+        && (data.body != '' || data.attachments.size() > 0);
+    }
+
+    function validGroupMessageReply(data) {
+      return data == null
+        || (
+          data is map
+          && data.keys().hasOnly(['messageId', 'authorName', 'bodyPreview'])
+          && data.messageId is string
+          && data.authorName is string
+          && data.bodyPreview is string
+        );
+    }
+
+    function validGroupMentions(items) {
+      return items is list
+        && items.size() <= 12;
+    }
+
+    function validGroupMessageDocument(data) {
+      return data.keys().hasAll([
+          'authorId',
+          'authorName',
+          'authorInitials',
+          'body',
+          'createdAt',
+          'mentions',
+          'attachments'
+        ])
+        && data.keys().hasOnly([
+          'authorId',
+          'authorName',
+          'authorInitials',
+          'body',
+          'createdAt',
+          'editedAt',
+          'deletedAt',
+          'replyTo',
+          'mentions',
+          'attachments'
+        ])
+        && data.authorId is string
+        && data.authorName is string
+        && data.authorInitials is string
+        && data.body is string
+        && validTimestamp(data.createdAt)
+        && (!data.keys().hasAny(['editedAt']) || validOptionalTimestamp(data.editedAt))
+        && (!data.keys().hasAny(['deletedAt']) || validOptionalTimestamp(data.deletedAt))
+        && (!data.keys().hasAny(['replyTo']) || validGroupMessageReply(data.replyTo))
+        && validGroupMentions(data.mentions)
+        && validGroupPostAttachments(data.attachments);
+    }
+
+    function groupMessageImmutableFieldsUnchanged() {
+      return request.resource.data.authorId == resource.data.authorId
+        && request.resource.data.authorName == resource.data.authorName
+        && request.resource.data.authorInitials == resource.data.authorInitials
+        && request.resource.data.createdAt == resource.data.createdAt;
+    }
+
+    function validMessageReaction(value) {
+      return value in ['👍', '🙏', '✅', '❤️'];
+    }
+
+    function validApplicant(data) {
+      return data.keys().hasAll([
+          'surname',
+          'firstName',
+          'otherNames',
+          'dateOfBirth',
+          'nationality',
+          'identificationNumber'
+        ])
+        && data.surname is string
+        && data.firstName is string
+        && data.otherNames is string
+        && data.dateOfBirth is string
+        && data.nationality is string
+        && data.identificationNumber is string
+        && (!data.keys().hasAny(['title']) || data.title is string)
+        && (!data.keys().hasAny(['gender']) || data.gender is string)
+        && (!data.keys().hasAny(['idType']) || data.idType is string);
+    }
+
+    function validContactEmployer(data) {
+      return data.keys().hasAll([
+          'telephone',
+          'whatsApp',
+          'digitalAddress',
+          'employerName',
+          'jobTitle'
+        ])
+        && data.telephone is string
+        && data.whatsApp is string
+        && data.digitalAddress is string
+        && data.employerName is string
+        && data.jobTitle is string;
+    }
+
+    function validPreferences(data) {
+      return data is map
+        && (!data.keys().hasAny(['unitInterest']) || data.unitInterest is string)
+        && (!data.keys().hasAny(['paymentTerm']) || data.paymentTerm is string)
+        && (!data.keys().hasAny(['deliveryTrack']) || data.deliveryTrack is string)
+        && (!data.keys().hasAny(['deliverySlot']) || data.deliverySlot is string)
+        && (!data.keys().hasAny(['additionalRequests']) || data.additionalRequests is string);
+    }
+
+    function validNextOfKin(data) {
+      return data.keys().hasAll([
+          'surname',
+          'firstName',
+          'otherNames',
+          'dateOfBirth',
+          'nationality',
+          'identification',
+          'telephone',
+          'whatsApp',
+          'addressCode'
+        ])
+        && data.surname is string
+        && data.firstName is string
+        && data.otherNames is string
+        && data.dateOfBirth is string
+        && data.nationality is string
+        && data.identification is string
+        && data.telephone is string
+        && data.whatsApp is string
+        && data.addressCode is string
+        && (!data.keys().hasAny(['title']) || data.title is string)
+        && (!data.keys().hasAny(['gender']) || data.gender is string);
+    }
+
+    function validShopUserDocument(data) {
+      return data.keys().hasAll(['name', 'email', 'role', 'kind', 'updatedAt'])
+        && data.keys().hasOnly([
+          'name',
+          'email',
+          'role',
+          'kind',
+          'updatedAt',
+          'createdAt',
+          'registrationSubmitted',
+          'registrationCompleted',
+          'assignedGroupId',
+          'assignedMemberId',
+          'registrationRef',
+          'financeBackendReady',
+          'statusTag'
+          ,'activeGroupIds'
+        ])
+        && data.name is string
+        && data.email is string
+        && data.role is string
+        && validUserKind(data.kind)
+        && validTimestamp(data.updatedAt)
+        && (!data.keys().hasAny(['createdAt']) || validTimestamp(data.createdAt))
+        && (!data.keys().hasAny(['registrationSubmitted']) || data.registrationSubmitted is bool)
+        && (!data.keys().hasAny(['registrationCompleted']) || data.registrationCompleted is bool)
+        && (!data.keys().hasAny(['assignedGroupId']) || validOptionalString(data.assignedGroupId))
+        && (!data.keys().hasAny(['assignedMemberId']) || validOptionalString(data.assignedMemberId))
+        && (!data.keys().hasAny(['registrationRef']) || validOptionalString(data.registrationRef))
+        && (!data.keys().hasAny(['financeBackendReady']) || data.financeBackendReady is bool)
+        && (!data.keys().hasAny(['statusTag']) || data.statusTag is string)
+        && (!data.keys().hasAny(['activeGroupIds']) || data.activeGroupIds is list);
+    }
+
+    function validRegistrationState(value) {
+      return value in ['pending_review', 'approved', 'corrections_requested', 'blocked'];
+    }
+
+    function validDeliverySlotAvailabilityDocument(data) {
+      return data.keys().hasAll([
+          'cohortId',
+          'deliveryTrack',
+          'deliverySlot',
+          'isAvailable',
+          'updatedAt'
+        ])
+        && data.cohortId is string
+        && data.deliveryTrack is string
+        && data.deliverySlot is string
+        && data.isAvailable is bool
+        && validTimestamp(data.updatedAt)
+        && (!data.keys().hasAny(['unitInterest']) || data.unitInterest is string)
+        && (!data.keys().hasAny(['paymentTerm']) || data.paymentTerm is string);
+    }
+
+    function validRegistrationDocument(data) {
+      return data.keys().hasAll([
+          'cohortId',
+          'cohortName',
+          'categoryKey',
+          'status',
+          'userId',
+          'userEmail',
+          'applicant',
+          'contactEmployer',
+          'preferences',
+          'nextOfKin',
+          'assignedGroupId',
+          'assignedMemberId',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.cohortId is string
+        && data.cohortName is string
+        && validOptionalString(data.categoryKey)
+        && validRegistrationState(data.status)
+        && data.userId is string
+        && data.userEmail is string
+        && validOptionalString(data.assignedGroupId)
+        && validOptionalString(data.assignedMemberId)
+        && (!data.keys().hasAny(['groupMemberships']) || data.groupMemberships is list)
+        && validApplicant(data.applicant)
+        && validContactEmployer(data.contactEmployer)
+        && validPreferences(data.preferences)
+        && validNextOfKin(data.nextOfKin)
+        && (!data.keys().hasAny(['reviewedAt']) || validTimestamp(data.reviewedAt))
+        && (!data.keys().hasAny(['reviewNote']) || validOptionalString(data.reviewNote))
+        && validTimestamp(data.createdAt)
+        && validTimestamp(data.updatedAt);
+    }
+
+    match /programmes/{programmeId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin()
+        && request.resource.data.id is string
+        && request.resource.data.slug is string
+        && request.resource.data.title is string
+        && request.resource.data.summary is string
+        && request.resource.data.description is string
+        && request.resource.data.location is string
+        && request.resource.data.status in ['draft', 'active', 'closed']
+        && request.resource.data.coverImage is string
+        && request.resource.data.galleryImages is list
+        && request.resource.data.videoUrls is list
+        && request.resource.data.kind == 'project'
+        && request.resource.data.parentProgrammeSlug in ['shop', 'slop']
+        && request.resource.data.showInDirectory is bool
+        && request.resource.data.isPublished is bool
+        && request.resource.data.sortOrder is int
+        && validTimestamp(request.resource.data.updatedAt)
+        && (!request.resource.data.keys().hasAny(['createdAt']) || validTimestamp(request.resource.data.createdAt));
+    }
+
+    match /cohorts/{cohortId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin()
+        && request.resource.data.programmeId is string
+        && request.resource.data.projectName is string
+        && request.resource.data.cohortName is string
+        && request.resource.data.cohortCode is string
+        && request.resource.data.description is string
+        && request.resource.data.location is string
+        && request.resource.data.maxMembersPerGroup is int
+        && request.resource.data.maxMembersPerGroup >= 6
+        && request.resource.data.maxMembersPerGroup <= 36
+        && request.resource.data.maxMembersPerGroup % 6 == 0
+        && request.resource.data.allowAutoCreateNextGroup is bool
+        && request.resource.data.interestOptions is list
+        && request.resource.data.paymentYearOptions is list
+        && validStatus(request.resource.data.status)
+        && validTimestamp(request.resource.data.updatedAt)
+        && (!request.resource.data.keys().hasAny(['createdAt']) || validTimestamp(request.resource.data.createdAt));
+    }
+
+    match /groups/{groupId} {
+      // Group metadata is needed to browse open groups, but it is not public to guests.
+      // Private posts/messages remain restricted to assigned members below.
+      allow read: if signedIn();
+      allow create, update: if isAdmin()
+        && request.resource.data.name is string
+        && request.resource.data.cohortId is string
+        && request.resource.data.cohortName is string
+        && request.resource.data.projectName is string
+        && request.resource.data.categoryKey is string
+        && request.resource.data.cohortNumber is int
+        && request.resource.data.interest is string
+        && request.resource.data.interestLabel is string
+        && request.resource.data.paymentTerm is string
+        && request.resource.data.maxMembers is int
+        && request.resource.data.maxMembers >= 6
+        && request.resource.data.maxMembers <= 36
+        && request.resource.data.maxMembers % 6 == 0
+        && request.resource.data.members is list
+        && request.resource.data.members.size() <= request.resource.data.maxMembers
+        && validStatus(request.resource.data.status)
+        && validTimestamp(request.resource.data.updatedAt)
+        && (!request.resource.data.keys().hasAny(['createdAt']) || validTimestamp(request.resource.data.createdAt));
+      allow delete: if isAdmin();
+
+      match /messages/{messageId} {
+        allow read: if isAssignedToGroup(groupId) || isAdmin();
+        allow create: if isAssignedToGroup(groupId)
+          && request.resource.data.authorId == request.auth.uid
+          && validGroupMessageDocument(request.resource.data)
+          && !request.resource.data.keys().hasAny(['deletedAt']);
+        allow update: if isAdmin()
+          || (
+            isAssignedToGroup(groupId)
+            && resource.data.authorId == request.auth.uid
+            && groupMessageImmutableFieldsUnchanged()
+            && validGroupMessageDocument(request.resource.data)
+          );
+        allow delete: if isAdmin();
+
+        match /reactions/{userId} {
+          allow read: if isAssignedToGroup(groupId) || isAdmin();
+          allow create, update: if isAssignedToGroup(groupId)
+            && userId == request.auth.uid
+            && request.resource.data.keys().hasOnly(['emoji', 'updatedAt'])
+            && validMessageReaction(request.resource.data.emoji)
+            && validTimestamp(request.resource.data.updatedAt);
+          allow delete: if isAssignedToGroup(groupId) && userId == request.auth.uid;
+        }
+
+        match /pins/{userId} {
+          allow read: if isAssignedToGroup(groupId) || isAdmin();
+          allow create, update: if isAssignedToGroup(groupId)
+            && userId == request.auth.uid
+            && request.resource.data.keys().hasOnly(['userId', 'createdAt'])
+            && request.resource.data.userId == request.auth.uid
+            && validTimestamp(request.resource.data.createdAt);
+          allow delete: if isAssignedToGroup(groupId) && userId == request.auth.uid;
+        }
+
+        match /seenBy/{userId} {
+          allow read: if isAssignedToGroup(groupId) || isAdmin();
+          allow create, update: if isAssignedToGroup(groupId)
+            && userId == request.auth.uid
+            && request.resource.data.keys().hasOnly(['userId', 'updatedAt'])
+            && request.resource.data.userId == request.auth.uid
+            && validTimestamp(request.resource.data.updatedAt);
+          allow delete: if isAdmin();
+        }
+      }
+
+      match /posts/{postId} {
+        allow read: if isAssignedToGroup(groupId) || isAdmin();
+        allow create: if isAssignedToGroup(groupId)
+          && request.resource.data.authorId == request.auth.uid
+          && validGroupPostDocument(request.resource.data);
+        allow update, delete: if isAdmin();
+
+        match /likes/{userId} {
+          allow read: if isAssignedToGroup(groupId) || isAdmin();
+          allow create: if isAssignedToGroup(groupId)
+            && request.auth.uid == userId
+            && request.resource.data.authorId == request.auth.uid
+            && request.resource.data.authorName is string
+            && request.resource.data.authorInitials is string
+            && validTimestamp(request.resource.data.createdAt);
+          allow delete: if (isAssignedToGroup(groupId) && request.auth.uid == userId) || isAdmin();
+          allow update: if isAdmin();
+        }
+
+        match /comments/{commentId} {
+          allow read: if isAssignedToGroup(groupId) || isAdmin();
+          allow create: if isAssignedToGroup(groupId)
+            && request.resource.data.authorId == request.auth.uid
+            && request.resource.data.authorName is string
+          && request.resource.data.authorInitials is string
+          && request.resource.data.body is string
+          && request.resource.data.body.size() <= 2000
+          && validTimestamp(request.resource.data.createdAt);
+          allow update, delete: if isAdmin()
+            || (signedIn() && resource.data.authorId == request.auth.uid);
+        }
+      }
+
+      match /documents/{documentId} {
+        allow read: if isAssignedToGroup(groupId) || isAdmin();
+        allow create, update, delete: if isAdmin()
+          && request.resource.data.title is string
+          && request.resource.data.summary is string
+          && request.resource.data.status is string
+          && validTimestamp(request.resource.data.updatedAt);
+      }
+
+      match /governance/{documentId} {
+        allow read: if isAssignedToGroup(groupId) || isAdmin();
+        allow create, update, delete: if isAdmin()
+          && request.resource.data.title is string
+          && request.resource.data.detail is string
+          && request.resource.data.owner is string
+          && request.resource.data.order is int;
+      }
+
+      match /deliveryUpdates/{documentId} {
+        allow read: if isAssignedToGroup(groupId) || isAdmin();
+        allow create, update, delete: if isAdmin()
+          && request.resource.data.title is string
+          && request.resource.data.detail is string
+          && request.resource.data.targetLabel is string
+          && request.resource.data.order is int
+          && request.resource.data.status in ['completed', 'active', 'upcoming'];
+      }
+    }
+
+    match /communityPosts/{postId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && validGroupPostDocument(request.resource.data);
+      allow update: if isAdmin()
+        || (signedIn() && resource.data.authorId == request.auth.uid && validGroupPostDocument(request.resource.data));
+      allow delete: if isAdmin() || (signedIn() && resource.data.authorId == request.auth.uid);
+
+      match /likes/{userId} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && userId == request.auth.uid
+          && request.resource.data.authorId == request.auth.uid
+          && request.resource.data.authorName is string
+          && request.resource.data.authorInitials is string
+          && validTimestamp(request.resource.data.createdAt);
+        allow delete: if signedIn() && userId == request.auth.uid;
+      }
+
+      match /comments/{commentId} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && request.resource.data.authorId == request.auth.uid
+          && request.resource.data.authorName is string
+          && request.resource.data.authorInitials is string
+          && request.resource.data.body is string
+          && request.resource.data.body.size() <= 2000
+          && validTimestamp(request.resource.data.createdAt);
+        allow update, delete: if isAdmin()
+          || (signedIn() && resource.data.authorId == request.auth.uid);
+      }
+    }
+
+    match /stories/{storyId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.authorName is string
+        && request.resource.data.authorInitials is string
+        && request.resource.data.url is string
+        && request.resource.data.kind in ['image', 'video']
+        && request.resource.data.scope in ['community', 'group']
+        && validTimestamp(request.resource.data.createdAt)
+        && validTimestamp(request.resource.data.expiresAt);
+      allow delete: if isAdmin() || (signedIn() && resource.data.authorId == request.auth.uid);
+    }
+
+    match /financeTemplates/{cohortId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin()
+        && request.resource.data.cohortId is string
+        && request.resource.data.comparisonLabel is string
+        && request.resource.data.currencySymbol is string
+        && request.resource.data.contributionGoalLabel is string
+        && request.resource.data.deliveryTracks is list
+        && validTimestamp(request.resource.data.updatedAt)
+        && (!request.resource.data.keys().hasAny(['createdAt']) || validTimestamp(request.resource.data.createdAt));
+    }
+
+    // Drafts and launch records are written by the admin callable so a public
+    // interest can never exist without an actionable cohort offer.
+    match /shopInterests/{interestId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create: if isAdmin() && request.resource.data.status == 'draft';
+      allow update: if isAdmin()
+        && resource.data.status == 'draft'
+        && request.resource.data.status == 'draft';
+      allow delete: if isAdmin();
+    }
+
+    match /waitingInterestRequests/{requestId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.userName is string
+        && request.resource.data.phone is string
+        && request.resource.data.requestedHome is string
+        && request.resource.data.status == 'submitted'
+        && validTimestamp(request.resource.data.createdAt)
+        && validTimestamp(request.resource.data.updatedAt);
+      allow update, delete: if isAdmin();
+    }
+
+    match /groupCreationRequests/{requestId} {
+      // Members can only see their own request. All writes go through callable
+      // functions so eligibility, capacity, and group assignment stay atomic.
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create, update, delete: if false;
+    }
+
+    match /systemAlerts/{alertId} {
+      allow read: if isAdmin();
+      allow create: if signedIn()
+        && validSystemAlertDocument(request.resource.data)
+        && request.resource.data.status == 'open'
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.userEmail == request.auth.token.email;
+      allow update: if signedIn()
+        && validSystemAlertDocument(request.resource.data)
+        && request.resource.data.status == 'open'
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.userEmail == request.auth.token.email;
+      allow update: if isAdmin()
+        && validSystemAlertDocument(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /registrations/{registrationId} {
+      allow create: if isOwner(registrationId)
+        && validRegistrationDocument(request.resource.data)
+        && request.resource.data.status == 'pending_review'
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.userEmail == request.auth.token.email
+        && request.resource.data.assignedGroupId == null
+        && request.resource.data.assignedMemberId == null
+        && !request.resource.data.keys().hasAny(['reviewedAt', 'reviewNote']);
+      allow read: if isOwner(registrationId) || isAdmin();
+      allow update: if isOwner(registrationId)
+        && validRegistrationDocument(request.resource.data)
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.userEmail == request.auth.token.email
+        && resource.data.status == 'pending_review'
+        && request.resource.data.status == 'pending_review'
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.userEmail == resource.data.userEmail
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.assignedGroupId == resource.data.assignedGroupId
+        && request.resource.data.assignedMemberId == resource.data.assignedMemberId
+        && request.resource.data.reviewNote == resource.data.reviewNote;
+      allow update, delete: if isAdmin()
+        && validRegistrationDocument(request.resource.data);
+    }
+
+    match /cohorts/{cohortId}/deliverySlotClaims/{claimId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create: if signedIn()
+        && request.resource.data.cohortId == cohortId
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.unitInterest is string
+        && request.resource.data.paymentTerm is string
+        && request.resource.data.deliveryTrack is string
+        && request.resource.data.deliverySlot is string
+        && claimId == request.resource.data.unitInterest
+          + '__' + request.resource.data.paymentTerm
+          + '__' + request.resource.data.deliveryTrack
+          + '__' + request.resource.data.deliverySlot
+        && validTimestamp(request.resource.data.updatedAt);
+      allow update: if signedIn()
+        && request.resource.data.cohortId == cohortId
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.unitInterest == resource.data.unitInterest
+        && request.resource.data.paymentTerm == resource.data.paymentTerm
+        && request.resource.data.deliveryTrack == resource.data.deliveryTrack
+        && request.resource.data.deliverySlot == resource.data.deliverySlot
+        && claimId == resource.data.unitInterest
+          + '__' + resource.data.paymentTerm
+          + '__' + resource.data.deliveryTrack
+          + '__' + resource.data.deliverySlot
+        && validTimestamp(request.resource.data.updatedAt);
+      allow delete: if signedIn()
+        && resource.data.cohortId == cohortId
+        && resource.data.userId == request.auth.uid;
+    }
+
+    match /cohorts/{cohortId}/deliverySlotAvailability/{availabilityId} {
+      allow read: if true;
+      allow create, update: if isAdmin()
+        && validDeliverySlotAvailabilityDocument(request.resource.data)
+        && request.resource.data.cohortId == cohortId;
+      allow delete: if isAdmin();
+    }
+
+    match /shopUsers/{userId} {
+      allow create: if isOwner(userId)
+        && validShopUserDocument(request.resource.data)
+        && request.resource.data.email == request.auth.token.email
+        && validMemberRole(request.resource.data.role);
+      allow read: if isOwner(userId) || isAdmin();
+      allow update: if isOwner(userId)
+        && validShopUserDocument(request.resource.data)
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.kind == resource.data.kind;
+      allow update, delete: if isAdmin();
+
+      match /transactions/{transactionId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create, update, delete: if isAdmin()
+          && request.resource.data.title is string
+          && request.resource.data.dateLabel is string
+          && request.resource.data.amountLabel is string
+          && request.resource.data.amountValue is number
+          && request.resource.data.status is string
+          && request.resource.data.kind is string
+          && request.resource.data.icon is string;
+      }
+
+      match /notifications/{notificationId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create, delete: if isAdmin();
+        allow update: if (isOwner(userId) || isAdmin())
+          && request.resource.data.title is string
+          && request.resource.data.body is string
+          && request.resource.data.kind is string
+          && validOptionalString(request.resource.data.route)
+          && request.resource.data.read is bool
+          && validTimestamp(request.resource.data.updatedAt)
+          && (!request.resource.data.keys().hasAny(['createdAt']) || validTimestamp(request.resource.data.createdAt))
+          && (!request.resource.data.keys().hasAny(['readAt']) || validTimestamp(request.resource.data.readAt));
+      }
+
+      match /settings/{documentId} {
+        allow read, update, create: if isOwner(userId) || isAdmin();
+        allow delete: if isAdmin();
+      }
+
+      match /devices/{deviceId} {
+        allow read, create, update: if isOwner(userId) || isAdmin();
+        allow delete: if isAdmin();
+      }
+    }
+
+    match /profiles/{profileId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /applications/{applicationId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /programmeEligibility/{documentId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /broadcasts/{broadcastId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /supportTickets/{ticketId} {
+      allow create: if signedIn()
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.ownerName is string
+        && request.resource.data.subject is string
+        && request.resource.data.category is string
+        && request.resource.data.body is string
+        && request.resource.data.latestReplyPreview is string
+        && request.resource.data.status is string
+        && validTimestamp(request.resource.data.createdAt)
+        && validTimestamp(request.resource.data.updatedAt);
+      allow read: if isAdmin() || (signedIn() && resource.data.ownerId == request.auth.uid);
+      allow update, delete: if isAdmin();
+    }
+
+    match /memberships/{membershipId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /programmeConfig/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /siteContent/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /auditLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Welcome-email jobs are created only by the trusted Cloud Function for
+    // Firebase Trigger Email. Clients must never be able to send arbitrary mail.
+    match /mail/{mailId} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

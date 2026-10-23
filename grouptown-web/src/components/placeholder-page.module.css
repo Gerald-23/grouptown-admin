@@ -1,0 +1,66 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background:
+    radial-gradient(circle at top left, rgba(0, 0, 0, 0.04), transparent 30%),
+    var(--surface-container-low);
+}
+
+.card {
+  width: min(760px, 100%);
+  padding: 48px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.05);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.card h1 {
+  margin: 0 0 16px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.description {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--on-secondary-container);
+  line-height: 1.75;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.primaryAction,
+.secondaryAction {
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.primaryAction {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.secondaryAction {
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}

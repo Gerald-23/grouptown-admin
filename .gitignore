@@ -1,0 +1,21 @@
+# Platform repository contains only these two deployable components.
+*
+!.gitignore
+!grouptown-web/
+!grouptown-web/**
+!firebase/
+!firebase/**
+
+# Never commit local credentials or generated/dependency output.
+grouptown-web/.env*
+grouptown-web/node_modules/
+grouptown-web/.next/
+grouptown-web/dist/
+grouptown-web/*.log
+firebase/functions/.env*
+firebase/functions/node_modules/
+firebase/functions/lib/
+firebase/.firebase/
+firebase/*.log
+
+**/tsconfig.tsbuildinfo

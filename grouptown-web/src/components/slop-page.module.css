@@ -1,0 +1,693 @@
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--on-background);
+}
+
+.container {
+  width: min(1240px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--outline-variant);
+  background: var(--surface);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 80px;
+}
+
+.brand {
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.nav,
+.headerActions,
+.heroActions,
+.sectionRow,
+.footerBottom,
+.footerIcons {
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  gap: 32px;
+  color: var(--secondary);
+}
+
+.nav a:hover,
+.headerActions a:hover,
+.inlineLink:hover,
+.footerGrid a:hover,
+.footerIcons span:hover {
+  opacity: 0.72;
+}
+
+.activeLink {
+  color: var(--primary);
+  font-weight: 700;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 4px;
+}
+
+.headerActions,
+.heroActions,
+.footerIcons {
+  gap: 16px;
+}
+
+.loginLink,
+.primaryButton,
+.primaryButtonLarge,
+.secondaryButtonLarge,
+.primaryButtonXLarge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.loginLink {
+  padding: 8px 16px;
+  color: var(--secondary);
+}
+
+.primaryButton,
+.primaryButtonLarge,
+.primaryButtonXLarge {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.primaryButton {
+  padding: 12px 24px;
+}
+
+.primaryButtonLarge {
+  padding: 16px 32px;
+}
+
+.primaryButtonXLarge {
+  padding: 20px 48px;
+  font-size: 1.125rem;
+}
+
+.secondaryButtonLarge {
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 16px 32px;
+}
+
+.main {
+  padding-bottom: 64px;
+}
+
+.heroSection,
+.overviewSection,
+.audienceSection,
+.opportunitiesSection,
+.capabilitiesSection,
+.faqSection {
+  padding-top: 64px;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.breadcrumbs span,
+.breadcrumbs a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumbActive {
+  color: var(--primary);
+}
+
+.heroGrid,
+.eligibilityGrid,
+.footerGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.heroGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+}
+
+.heroSection h1,
+.overviewSection h2,
+.sectionHeading,
+.sectionHeadingCentered,
+.eligibilityCard h2,
+.noticePanel h2,
+.finalCtaCard h2 {
+  margin: 0;
+  color: var(--primary);
+}
+
+.heroSection h1 {
+  margin-bottom: 16px;
+  line-height: 1.05;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+}
+
+.heroCopy,
+.overviewParagraphs p,
+.audienceCard p,
+.timelineStep p,
+.opportunityBody p,
+.sectionDescription,
+.capabilityCard p,
+.noticePanel p,
+.faqItem div,
+.finalCtaCard p,
+.footerGrid p {
+  color: var(--secondary);
+  line-height: 1.7;
+}
+
+.heroCopy {
+  max-width: 40rem;
+  margin: 0 0 32px;
+  font-size: 1.125rem;
+}
+
+.heroImageWrap {
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+}
+
+.coverImage,
+.opportunityImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.overviewSection {
+  border-top: 1px solid var(--outline-variant);
+}
+
+.overviewCopy {
+  max-width: 48rem;
+}
+
+.overviewSection h2,
+.sectionHeading,
+.sectionHeadingCentered,
+.eligibilityCard h2 {
+  margin-bottom: 32px;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.overviewParagraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.overviewParagraphs p {
+  margin: 0;
+}
+
+.complianceCard {
+  margin-top: 24px;
+  border-left: 4px solid var(--primary);
+  background: var(--surface-container);
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.complianceTitle {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.sectionHeadingCentered {
+  text-align: center;
+}
+
+.audienceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.audienceCard,
+.opportunityCard,
+.capabilityCard,
+.eligibilityCard {
+  border: 1px solid var(--outline-variant);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.audienceCard {
+  padding: 32px;
+}
+
+.audienceIcon {
+  margin-bottom: 16px;
+  color: var(--primary);
+  font-size: 2rem;
+}
+
+.audienceCard h3,
+.opportunityBody h3,
+.capabilityCard h4 {
+  margin: 0 0 8px;
+  color: var(--primary);
+}
+
+.timelineSection {
+  margin-top: 64px;
+  background: var(--surface-container-low);
+  padding: 64px 0;
+}
+
+.timelineRail {
+  position: relative;
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+.timelineLine {
+  position: absolute;
+  top: calc(24px - 1px);
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--outline-variant);
+}
+
+.timelineGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.timelineStep {
+  text-align: center;
+}
+
+.timelineNumber {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--primary);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.timelineActive {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.timelineStep h4 {
+  margin: 0 0 8px;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.timelineStep p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.sectionRow {
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+}
+
+.inlineLink {
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.opportunityGrid,
+.capabilityGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.opportunityGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.opportunityImageWrap {
+  position: relative;
+  height: 192px;
+  overflow: hidden;
+}
+
+.opportunityImage {
+  filter: grayscale(1);
+  transition: filter 0.3s ease;
+}
+
+.opportunityCard:hover .opportunityImage {
+  filter: grayscale(0);
+}
+
+.statusBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--primary);
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.opportunityBody {
+  padding: 24px;
+}
+
+.opportunityBody p {
+  margin: 0 0 16px;
+}
+
+.opportunityFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--outline-variant);
+  padding-top: 16px;
+  font-size: 0.75rem;
+}
+
+.opportunityFooter span {
+  color: var(--secondary);
+}
+
+.opportunityFooter a {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.sectionDescription {
+  margin: -16px 0 32px;
+}
+
+.capabilityGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.capabilityCard {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+}
+
+.capabilityIcon {
+  color: var(--primary);
+}
+
+.eligibilitySection {
+  padding-top: 64px;
+}
+
+.eligibilityGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.eligibilityCard {
+  padding: 32px;
+}
+
+.eligibilityList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.eligibilityList li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--secondary);
+}
+
+.eligibilityList span:first-child {
+  color: var(--primary);
+}
+
+.noticePanel {
+  border-radius: 12px;
+  background: var(--primary);
+  color: #ffffff;
+  padding: 40px;
+}
+
+.noticeHeader {
+  display: flex;
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.noticeHeader span {
+  font-size: 3rem;
+}
+
+.noticePanel h2 {
+  color: #ffffff;
+}
+
+.noticePanel p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.noticeFootnote {
+  margin-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 16px;
+  font-style: italic;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.faqItem {
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.faqItem summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+  cursor: pointer;
+  padding: 24px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.faqItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqItem[open] summary span:last-child {
+  transform: rotate(180deg);
+}
+
+.faqItem div {
+  border-top: 1px solid var(--outline-variant);
+  padding: 16px 24px 24px;
+}
+
+.finalCtaSection {
+  padding-top: 64px;
+  margin-bottom: 64px;
+}
+
+.finalCtaCard {
+  border: 1px solid var(--outline-variant);
+  border-radius: 16px;
+  background: var(--surface-container);
+  padding: 40px;
+  text-align: center;
+}
+
+.finalCtaCard h2 {
+  margin-bottom: 16px;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.finalCtaCard p {
+  max-width: 42rem;
+  margin: 0 auto 32px;
+  color: var(--secondary);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.footer {
+  border-top: 1px solid var(--outline-variant);
+  background: var(--surface-container-low);
+  padding: 64px 0;
+}
+
+.footerGrid {
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+}
+
+.footerBrand {
+  margin-bottom: 16px;
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.footerGrid h4 {
+  margin: 0 0 16px;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footerGrid a,
+.footerGrid p,
+.footerBottom {
+  color: var(--secondary);
+}
+
+.footerGrid a {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.footerBottom {
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--outline-variant);
+  margin-top: 32px;
+  padding-top: 16px;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 1024px) {
+  .nav {
+    display: none;
+  }
+
+  .heroGrid,
+  .audienceGrid,
+  .opportunityGrid,
+  .capabilityGrid,
+  .eligibilityGrid,
+  .footerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineLine {
+    display: none;
+  }
+
+  .heroImageWrap {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 720px) {
+  .container {
+    width: min(100% - 32px, 1240px);
+  }
+
+  .headerInner {
+    flex-wrap: wrap;
+    padding: 16px 0;
+  }
+
+  .heroSection,
+  .overviewSection,
+  .audienceSection,
+  .timelineSection,
+  .opportunitiesSection,
+  .capabilitiesSection,
+  .eligibilitySection,
+  .faqSection,
+  .finalCtaSection,
+  .footer {
+    padding-top: 48px;
+  }
+
+  .main,
+  .footer {
+    padding-bottom: 48px;
+  }
+
+  .noticePanel,
+  .eligibilityCard,
+  .finalCtaCard {
+    padding: 24px;
+  }
+}

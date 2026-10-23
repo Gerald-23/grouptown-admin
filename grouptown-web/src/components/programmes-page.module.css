@@ -1,0 +1,521 @@
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--on-background);
+}
+
+.container {
+  width: min(1240px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 80px;
+  border-bottom: 1px solid var(--outline-variant);
+  background: var(--surface);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 100%;
+}
+
+.brand {
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  color: var(--secondary);
+}
+
+.navLinks a:hover,
+.authLinks a:hover,
+.inlineLink:hover {
+  opacity: 0.72;
+}
+
+.activeLink {
+  color: var(--primary);
+  font-weight: 700;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 4px;
+}
+
+.authLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.loginLink,
+.registerLink,
+.primaryCta,
+.secondaryCta,
+.supportLink,
+.faqItem {
+  transition: all 0.2s ease;
+}
+
+.loginLink {
+  padding: 8px 16px;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.registerLink,
+.primaryCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 16px 24px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.main {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.hero {
+  margin-bottom: 64px;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.breadcrumbs a::after {
+  content: "/";
+  margin-left: 8px;
+  color: var(--outline-variant);
+}
+
+.breadcrumbs span {
+  color: var(--primary);
+}
+
+.hero h1,
+.comparisonGrid h2,
+.chooserHeader h2,
+.sectionHeader h2,
+.finalCta h2 {
+  margin: 0;
+  color: var(--primary);
+}
+
+.hero h1 {
+  margin-bottom: 16px;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.05;
+}
+
+.heroCopy {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--secondary);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.heroNote {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.comparisonGrid,
+.guideGrid,
+.footerGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.comparisonGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 64px;
+}
+
+.programmeCard {
+  overflow: hidden;
+  border: 1px solid var(--outline-variant);
+  border-radius: 18px;
+  background: var(--surface-container-lowest);
+  transition: border-color 0.3s ease;
+}
+
+.programmeCard:hover {
+  border-color: var(--primary);
+}
+
+.cardImageWrap {
+  position: relative;
+  height: 256px;
+  overflow: hidden;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.7s ease;
+}
+
+.programmeCard:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.cardLabel {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 32px;
+}
+
+.cardBody h2 {
+  margin-bottom: 8px;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.metaBlock {
+  margin-bottom: 16px;
+}
+
+.metaBlock span,
+.journey > span,
+.footerHeading {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metaBlock p,
+.chooserHeader p,
+.guideCard p,
+.sectionHeader p,
+.finalCta p,
+.footerIntro p,
+.footerBottom p {
+  margin: 0;
+  color: var(--primary);
+  line-height: 1.6;
+}
+
+.journey {
+  margin-top: 8px;
+  margin-bottom: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--outline-variant);
+}
+
+.journeyRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  color: var(--secondary);
+  white-space: nowrap;
+}
+
+.journeyRow i {
+  font-size: 16px;
+}
+
+.journeyStep {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.journeyRow strong {
+  color: var(--primary);
+}
+
+.secondaryCta,
+.supportLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--outline);
+  color: var(--primary);
+  padding: 16px 24px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.secondaryCta {
+  border-width: 2px;
+  border-color: var(--primary);
+}
+
+.secondaryCta:hover,
+.supportLink:hover {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.chooserSection {
+  margin-bottom: 64px;
+  border-radius: 18px;
+  background: var(--surface-container);
+  padding: 64px 32px;
+}
+
+.chooserHeader {
+  max-width: 42rem;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.guideGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.guideCard {
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  padding: 16px;
+}
+
+.guideCard i,
+.footerIcons i {
+  color: var(--primary);
+}
+
+.guideCard i {
+  margin-bottom: 8px;
+}
+
+.guideCard h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.faqSection {
+  margin-bottom: 64px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.inlineLink {
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+}
+
+.faqItem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--outline-variant);
+  background: transparent;
+  padding: 16px 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.faqItem i {
+  color: var(--secondary);
+  margin-left: auto;
+}
+
+.faqQuestion {
+  flex: 1;
+  color: var(--primary);
+  line-height: 1.5;
+}
+
+.faqItem:hover .faqQuestion {
+  transform: translateX(4px);
+  transition: transform 0.2s ease;
+}
+
+.faqItemOpen {
+  background: var(--surface-container-low);
+}
+
+.faqAnswer {
+  flex-basis: 100%;
+  color: var(--secondary);
+  line-height: 1.7;
+}
+
+.finalCta {
+  border: 2px solid var(--primary);
+  background: var(--surface-container-lowest);
+  padding: 64px 32px;
+  text-align: center;
+}
+
+.finalCta h2 {
+  margin-bottom: 8px;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.finalCta p {
+  max-width: 40rem;
+  margin: 0 auto 32px;
+  color: var(--secondary);
+}
+
+.finalActions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer {
+  border-top: 1px solid var(--outline-variant);
+  background: var(--surface-container-low);
+  padding: 64px 0;
+}
+
+.footerGrid {
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  margin-bottom: 64px;
+}
+
+.footerIntro {
+  max-width: 20rem;
+}
+
+.footerBrand {
+  margin-bottom: 16px;
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.footerGrid a {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--secondary);
+}
+
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--outline-variant);
+  padding-top: 32px;
+}
+
+.footerBottom p {
+  color: var(--secondary);
+}
+
+.footerIcons {
+  display: flex;
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .navLinks {
+    display: none;
+  }
+
+  .comparisonGrid,
+  .guideGrid,
+  .footerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader,
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .container {
+    width: min(100% - 32px, 1240px);
+  }
+
+  .header {
+    height: auto;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    padding: 16px 0;
+  }
+
+  .main,
+  .footer {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .chooserSection,
+  .finalCta,
+  .cardBody {
+    padding: 24px;
+  }
+}

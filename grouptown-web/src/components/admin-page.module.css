@@ -1,0 +1,393 @@
+.stack {
+  display: grid;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.liveStrip,
+.commandBar {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--outline-variant);
+  background:
+    radial-gradient(circle at top right, rgba(0, 0, 0, 0.06), transparent 32%),
+    linear-gradient(135deg, var(--surface-container-lowest), var(--surface-container-low));
+}
+
+.liveStripTitle,
+.commandTitle {
+  margin: 8px 0 0;
+  color: var(--primary);
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.liveStripActions,
+.commandActions,
+.sideStack {
+  display: grid;
+  gap: 12px;
+}
+
+.liveStripBlock,
+.commandCopy {
+  max-width: 760px;
+}
+
+.metricsGrid {
+  display: grid;
+  gap: 16px;
+}
+
+.metricCard,
+.panel,
+.moduleCard,
+.responsibilityCard,
+.noteCard {
+  background: var(--surface);
+  border: 1px solid var(--outline-variant);
+}
+
+.metricCard,
+.moduleCard,
+.responsibilityCard,
+.noteCard {
+  padding: 24px;
+}
+
+.metricCard,
+.moduleCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.metricCard::after,
+.moduleCard::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), transparent 72%);
+  opacity: 0.16;
+}
+
+.metricLabel,
+.panelLabel,
+.statusTag,
+.listLabel,
+.tableHead {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  margin-top: 10px;
+  color: var(--primary);
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.metricMeta,
+.mutedText,
+.bulletList,
+.functionList,
+.capabilityList,
+.tableCellSecondary {
+  color: var(--secondary);
+}
+
+.metricMeta,
+.mutedText,
+.tableCellSecondary {
+  margin: 10px 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.twoColumn,
+.threeColumn {
+  display: grid;
+  gap: 16px;
+}
+
+.panel {
+  padding: 24px;
+}
+
+.panelHeader,
+.moduleTop,
+.tableRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.panelTitle,
+.moduleTitle,
+.responsibilityTitle,
+.noteTitle {
+  margin: 10px 0 0;
+  color: var(--primary);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.panelBody,
+.moduleBody,
+.responsibilityBody,
+.noteBody {
+  margin-top: 14px;
+  display: grid;
+  gap: 14px;
+}
+
+.statusTag {
+  border: 1px solid var(--outline-variant);
+  padding: 6px 10px;
+  background: var(--surface-container-lowest);
+}
+
+.queueValue {
+  color: var(--primary);
+  font-size: 1.75rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.buttonRow,
+.rowActionArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.buttonRow {
+  flex-wrap: wrap;
+}
+
+.rowActionArea {
+  justify-content: flex-end;
+}
+
+.primaryButton {
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.secondaryButton {
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+}
+
+.miniActionButton {
+  min-height: 32px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 0 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.miniActionButton:hover,
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-1px);
+}
+
+.inlineStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.inlineStat {
+  min-width: 140px;
+  padding: 14px 16px;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  display: grid;
+  gap: 6px;
+}
+
+.inlineStat strong {
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.inlineStatLabel {
+  color: var(--secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.formField {
+  display: grid;
+  gap: 8px;
+}
+
+.formInput,
+.formTextarea {
+  width: 100%;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  color: var(--primary);
+  padding: 12px 14px;
+  font-size: 0.95rem;
+}
+
+.formTextarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+.bulletList,
+.functionList,
+.capabilityList {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.table {
+  display: grid;
+  border: 1px solid var(--outline-variant);
+}
+
+.queueBoard {
+  display: grid;
+  gap: 12px;
+}
+
+.queueCard {
+  border: 1px solid var(--outline-variant);
+  background: linear-gradient(180deg, var(--surface-container-lowest), var(--surface));
+  padding: 18px 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.queueTop,
+.queueFoot {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.queuePrimary {
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.queueSecondary,
+.queueMiddle {
+  color: var(--secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.queuePill {
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-low);
+  color: var(--primary);
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.queueMiddle {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.queueFootCopy {
+  display: grid;
+  gap: 4px;
+  max-width: 70%;
+}
+
+.tableRow {
+  padding: 16px 20px;
+  border-top: 1px solid var(--outline-variant);
+}
+
+.tableRow:first-child {
+  border-top: 0;
+}
+
+.tableHead,
+.tableCell,
+.tableCellSecondary {
+  flex: 1;
+}
+
+.tableHead {
+  color: var(--primary);
+}
+
+.tableCell {
+  color: var(--primary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .liveStrip,
+  .commandBar {
+    grid-template-columns: minmax(0, 1.5fr) auto;
+    align-items: end;
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .twoColumn {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+
+  .threeColumn {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sideStack {
+    grid-template-rows: auto auto;
+  }
+}

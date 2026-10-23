@@ -1,0 +1,286 @@
+.stack {
+  display: grid;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.hero,
+.panel,
+.noteCard,
+.slotCard {
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+}
+
+.hero,
+.panel,
+.noteCard {
+  padding: 24px;
+}
+
+.hero {
+  display: grid;
+  gap: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(0, 0, 0, 0.06), transparent 28%),
+    linear-gradient(135deg, var(--surface-container-lowest), var(--surface-container-low));
+}
+
+.heroTitle,
+.panelTitle,
+.trackTitle {
+  margin: 10px 0 0;
+  color: var(--primary);
+}
+
+.heroTitle {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.panelTitle,
+.trackTitle {
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.panelLabel,
+.fieldLabel,
+.pill {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.muted {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.actions,
+.topRow,
+.row,
+.slotHeader {
+  display: flex;
+  gap: 12px;
+}
+
+.actions {
+  flex-wrap: wrap;
+}
+
+.topRow,
+.row,
+.slotHeader {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.row {
+  align-items: center;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.secondaryButton {
+  border: 1px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.formGrid {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.checkboxField {
+  display: grid;
+  gap: 8px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  padding: 12px 14px;
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.checkboxRow input {
+  margin: 0;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  color: var(--primary);
+  padding: 12px 14px;
+  font-size: 0.95rem;
+}
+
+.textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+.tracks {
+  display: grid;
+  gap: 20px;
+}
+
+.trackCard {
+  display: grid;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid var(--outline-variant);
+}
+
+.trackCard:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.trackCopy {
+  display: grid;
+  gap: 6px;
+}
+
+.slotGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.slotCard {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  min-width: 0;
+}
+
+.slotMeta {
+  display: grid;
+  gap: 4px;
+}
+
+.statusLive,
+.statusClosed {
+  padding: 6px 10px;
+  border: 1px solid var(--outline-variant);
+}
+
+.statusLive {
+  color: var(--primary);
+  background: var(--surface-container-lowest);
+}
+
+.statusClosed {
+  color: var(--secondary);
+  background: var(--surface-container-low);
+}
+
+.slotMetrics {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.metricField {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pill {
+  border: 1px solid var(--outline-variant);
+  padding: 6px 10px;
+  background: var(--surface-container-lowest);
+}
+
+.statusError,
+.statusOk {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.statusError {
+  color: var(--error);
+}
+
+.statusOk {
+  color: var(--primary);
+}
+
+.gatewayNoteGrid {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .formGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .slotGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .slotMetrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gatewayNoteGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

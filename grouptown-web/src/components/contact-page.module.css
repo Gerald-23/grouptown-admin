@@ -1,0 +1,382 @@
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.container {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--border-soft);
+  backdrop-filter: blur(10px);
+}
+
+.headerInner {
+  min-height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand,
+.nav a,
+.headerActions a,
+.footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+}
+
+.nav a {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.activeLink {
+  color: var(--foreground) !important;
+  border-bottom: 2px solid var(--foreground);
+  padding-bottom: 0.25rem;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.signInLink {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.joinButton,
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 24px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.main {
+  padding-top: 8rem;
+  padding-bottom: 64px;
+}
+
+.introSection,
+.cardGrid,
+.contentGrid {
+  margin-bottom: 64px;
+}
+
+.supportLabel,
+.form label > span,
+.footerLinkGroups p {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.supportLabel {
+  color: var(--foreground);
+}
+
+.introSection h1 {
+  margin: 0 0 24px;
+  font-size: clamp(2.5rem, 5vw, 3rem);
+  line-height: 1.15;
+}
+
+.introText,
+.infoCard p,
+.formPanel > p,
+.checkboxRow span,
+.formFooter p,
+.addressRow p,
+.corporateCard p,
+.footerBrandBlock p,
+.footerBottom p {
+  color: var(--muted);
+}
+
+.introText {
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.infoCard {
+  padding: 32px;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+}
+
+.cardIcon {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--foreground);
+  font-size: 2rem;
+}
+
+.infoCard h3,
+.formPanel h2,
+.officeCard h3,
+.corporateCard h4 {
+  margin: 0 0 8px;
+}
+
+.infoCard strong,
+.infoCard span {
+  display: block;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 32px;
+}
+
+.formPanel,
+.officeCard {
+  padding: 32px;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+}
+
+.form {
+  display: grid;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.twoColGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  border: 1px solid var(--border-soft);
+  background: var(--background);
+  padding: 12px 16px;
+  font: inherit;
+}
+
+.phoneWrap {
+  display: flex;
+}
+
+.phoneCode {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid var(--border-soft);
+  border-right: 0;
+  background: var(--surface-strong);
+  color: var(--muted);
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.checkboxRow input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.formFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+}
+
+.sideColumn {
+  display: grid;
+  gap: 32px;
+}
+
+.addressRow {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.addressRow > span {
+  color: var(--foreground);
+}
+
+.mapFrame {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  border: 1px solid var(--border-soft);
+}
+
+.mapFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mapBadge {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 8px 16px;
+  border: 1px solid var(--foreground);
+  background: rgba(255, 255, 255, 0.94);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.corporateCard {
+  padding: 32px;
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.corporateCard p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 24px;
+}
+
+.corporateCard a {
+  color: #fff;
+  text-decoration: underline;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.footer {
+  background: var(--background-muted);
+  border-top: 1px solid var(--border-soft);
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.footerBrand {
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.footerLinkGroups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.footerLinkGroups a {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--muted);
+}
+
+.supportActive {
+  color: var(--foreground) !important;
+  font-weight: 700;
+}
+
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 48px;
+  margin-top: 48px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.footerIcons {
+  display: flex;
+  gap: 24px;
+  color: var(--muted);
+}
+
+@media (max-width: 1024px) {
+  .cardGrid,
+  .contentGrid,
+  .footerLinkGroups {
+    grid-template-columns: 1fr;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .twoColGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .headerInner {
+    gap: 12px;
+  }
+
+  .headerActions {
+    gap: 8px;
+  }
+}

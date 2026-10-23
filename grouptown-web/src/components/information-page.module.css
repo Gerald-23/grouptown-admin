@@ -1,0 +1,162 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0b1020 0%, #10172b 100%);
+  color: #f8fafc;
+  padding: 72px 20px;
+}
+
+.shell {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  display: grid;
+  gap: 24px;
+}
+
+.hero {
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.78);
+  padding: 28px;
+  display: grid;
+  gap: 14px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #93c5fd;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: 38px;
+  line-height: 1.08;
+  font-weight: 800;
+}
+
+.intro {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 16px;
+  line-height: 26px;
+  max-width: 760px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primaryAction,
+.secondaryAction {
+  min-height: 44px;
+  border-radius: 999px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 800;
+}
+
+.primaryAction {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.secondaryAction {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 20px;
+}
+
+.mainColumn,
+.sideColumn {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.7);
+  padding: 24px;
+}
+
+.cardTitle {
+  margin: 0 0 14px;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 800;
+}
+
+.paragraphs {
+  display: grid;
+  gap: 12px;
+}
+
+.paragraph {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.metaList {
+  display: grid;
+  gap: 10px;
+}
+
+.metaRow {
+  display: grid;
+  gap: 4px;
+}
+
+.metaLabel {
+  color: #93c5fd;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metaValue {
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+@media (max-width: 860px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+}
