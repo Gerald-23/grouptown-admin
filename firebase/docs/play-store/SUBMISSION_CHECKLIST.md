@@ -22,7 +22,7 @@
 
 ## Technical release
 
-- [ ] Production Android package is `com.gerald2307.grouptownapp`.
+- [ ] Production Android package is `com.gerald23.grouptownapp`.
 - [ ] Release is signed through EAS/Play App Signing.
 - [ ] Firebase Functions and Firestore/Storage rules are deployed.
 - [ ] Hubtel production secrets are set only in Firebase Functions runtime.
