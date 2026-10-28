@@ -1,5 +1,7 @@
 import { initializeApp } from 'firebase-admin/app';
-import { FieldValue, getFirestore } from 'firebase-admin/firestore';
+import { getAuth } from 'firebase-admin/auth';
+import { FieldValue, getFirestore, type DocumentData, type DocumentReference, type QuerySnapshot } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 import { onDocumentCreated, onDocumentWritten } from 'firebase-functions/v2/firestore';
 import { HttpsError, onCall, onRequest } from 'firebase-functions/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
@@ -8,6 +10,7 @@ import { logger } from 'firebase-functions';
 initializeApp();
 
 const firestore = getFirestore();
+const adminAuth = getAuth();
 const CITY_OF_ANGELS_PROGRAMME_ID = 'city-of-angels';
 const CITY_OF_ANGELS_COHORT_ID = 'city-of-angels-cohort-01';
 const GROUP_SIZE_OPTIONS = [6, 12, 18, 24, 30, 36] as const;
@@ -16,6 +19,71 @@ const DEFAULT_GROUP_MEMBERS = 12;
 const SYSTEM_MESSAGE_AUTHOR_ID = '__system__';
 const SYSTEM_MESSAGE_AUTHOR_NAME = 'GroupTown';
 const SYSTEM_MESSAGE_AUTHOR_INITIALS = 'GT';
+
+function accountGroupIds(data: DocumentData | undefined) {
+  const ids = new Set<string>();
+  const memberships = Array.isArray(data?.groupMemberships) ? data.groupMemberships : [];
+  memberships.forEach((membership: unknown) => {
+    if (membership && typeof membership === 'object' && typeof (membership as { groupId?: unknown }).groupId === 'string') {
+      ids.add((membership as { groupId: string }).groupId);
+    }
+  });
+  if (typeof data?.assignedGroupId === 'string' && data.assignedGroupId.trim()) ids.add(data.assignedGroupId.trim());
+  return [...ids];
+}
+
+async function deleteUserOwnedDocuments(userId: string) {
+  const refs = new Map<string, DocumentReference>();
+  const addSnapshotRefs = (snapshot: QuerySnapshot) => {
+    snapshot.docs.forEach((entry) => refs.set(entry.ref.path, entry.ref));
+  };
+
+  const [communityPosts, groupPosts, messages, comments, likes, stories, waitingRequests, supportTickets] = await Promise.all([
+    firestore.collection('communityPosts').where('authorId', '==', userId).get(),
+    firestore.collectionGroup('posts').where('authorId', '==', userId).get(),
+    firestore.collectionGroup('messages').where('authorId', '==', userId).get(),
+    firestore.collectionGroup('comments').where('authorId', '==', userId).get(),
+    firestore.collectionGroup('likes').where('authorId', '==', userId).get(),
+    firestore.collection('stories').where('authorId', '==', userId).get(),
+    firestore.collection('waitingInterestRequests').where('userId', '==', userId).get(),
+    firestore.collection('supportTickets').where('ownerId', '==', userId).get(),
+  ]);
+
+  [communityPosts, groupPosts, messages, comments, likes, stories, waitingRequests, supportTickets].forEach(addSnapshotRefs);
+  for (const ref of refs.values()) {
+    await firestore.recursiveDelete(ref);
+  }
+
+  const paymentSnapshot = await firestore.collection('hubtelPayments').where('userId', '==', userId).get();
+  if (!paymentSnapshot.empty) {
+    const batch = firestore.batch();
+    paymentSnapshot.docs.forEach((payment) => {
+      // Keep non-personal transaction/audit metadata where required, but remove the account link.
+      batch.set(payment.ref, {
+        userId: FieldValue.delete(),
+        accountDeletedAt: FieldValue.serverTimestamp(),
+        hubtelPhoneNumber: FieldValue.delete(),
+      }, { merge: true });
+    });
+    await batch.commit();
+  }
+}
+
+async function deleteUserOwnedStorage(userId: string, groupIds: string[]) {
+  const bucket = getStorage().bucket();
+  const prefixes = [
+    `stories/${userId}/`,
+    `community/feed/${userId}/`,
+    ...groupIds.map((groupId) => `groups/${groupId}/feed/${userId}/`),
+  ];
+  await Promise.all(prefixes.map(async (prefix) => {
+    try {
+      await bucket.deleteFiles({ prefix });
+    } catch (error) {
+      logger.error('Account deletion could not remove a storage prefix.', { prefix, error });
+    }
+  }));
+}
 
 /**
  * Hubtel secrets are intentionally read only from the Functions runtime.
@@ -1809,6 +1877,36 @@ export const enforceRegistrationAge = onDocumentWritten('registrations/{registra
       { merge: true }
     ),
   ]);
+});
+
+/**
+ * Permanently deletes a member's account and user-owned content. This is called
+ * from Profile > Settings after the member confirms the destructive action.
+ * Payment records retain only non-personal audit metadata where required.
+ */
+export const deleteShopAccount = onCall(async (request) => {
+  const userId = request.auth?.uid;
+  if (!userId) {
+    throw new HttpsError('unauthenticated', 'Sign in before deleting your account.');
+  }
+
+  const userRef = firestore.doc(`shopUsers/${userId}`);
+  const userSnap = await userRef.get();
+  const groupIds = accountGroupIds(userSnap.data());
+
+  await deleteUserOwnedDocuments(userId);
+  await deleteUserOwnedStorage(userId, groupIds);
+  await firestore.recursiveDelete(userRef);
+  await firestore.recursiveDelete(firestore.doc(`registrations/${userId}`));
+
+  try {
+    await adminAuth.deleteUser(userId);
+  } catch (error) {
+    const code = error && typeof error === 'object' && 'code' in error ? error.code : undefined;
+    if (code !== 'auth/user-not-found') throw error;
+  }
+
+  return { ok: true };
 });
 
 export const onGroupFeedPostCreated = onDocumentCreated('groups/{groupId}/posts/{postId}', async (event) => {
