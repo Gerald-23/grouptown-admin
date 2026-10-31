@@ -114,7 +114,8 @@ service cloud.firestore {
           'authorInitials',
           'body',
           'attachments',
-          'createdAt'
+          'createdAt',
+          'updatedAt'
         ])
         && data.authorId is string
         && data.authorName is string
@@ -122,6 +123,7 @@ service cloud.firestore {
         && data.body is string
         && validGroupPostAttachments(data.attachments)
         && validTimestamp(data.createdAt)
+        && (!data.keys().hasAny(['updatedAt']) || validTimestamp(data.updatedAt))
         && (data.body != '' || data.attachments.size() > 0);
     }
 
@@ -465,7 +467,9 @@ service cloud.firestore {
         allow create: if isAssignedToGroup(groupId)
           && request.resource.data.authorId == request.auth.uid
           && validGroupPostDocument(request.resource.data);
-        allow update, delete: if isAdmin();
+        allow update: if isAdmin()
+          || (isAssignedToGroup(groupId) && resource.data.authorId == request.auth.uid && validGroupPostDocument(request.resource.data));
+        allow delete: if isAdmin() || (isAssignedToGroup(groupId) && resource.data.authorId == request.auth.uid);
 
         match /likes/{userId} {
           allow read: if isAssignedToGroup(groupId) || isAdmin();
@@ -554,6 +558,17 @@ service cloud.firestore {
         allow update, delete: if isAdmin()
           || (signedIn() && resource.data.authorId == request.auth.uid);
       }
+    }
+
+    match /postReports/{reportId} {
+      allow create: if signedIn()
+        && request.resource.data.reportedBy == request.auth.uid
+        && request.resource.data.postId is string
+        && request.resource.data.scope in ['community', 'group']
+        && request.resource.data.reason is string
+        && request.resource.data.status == 'open'
+        && validTimestamp(request.resource.data.createdAt);
+      allow read, update, delete: if isAdmin();
     }
 
     match /stories/{storyId} {
@@ -738,6 +753,15 @@ service cloud.firestore {
       match /settings/{documentId} {
         allow read, update, create: if isOwner(userId) || isAdmin();
         allow delete: if isAdmin();
+      }
+
+      match /savedPosts/{postId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create, update: if isOwner(userId)
+          && request.resource.data.postId is string
+          && request.resource.data.scope in ['community', 'group']
+          && validTimestamp(request.resource.data.savedAt);
+        allow delete: if isOwner(userId) || isAdmin();
       }
 
       match /devices/{deviceId} {
